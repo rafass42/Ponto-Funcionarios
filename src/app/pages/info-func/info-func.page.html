@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-item class="ion-text-center text-boldlogin">
+    <ion-label>
+      Dados dos funcionarios
+    </ion-label>
+  </ion-item>
+</ion-header>
+
+<ion-content color="primary" [fullscreen]="true">
+
+  <ion-searchbar class="searchSTY"
+  placeholder="Digite o nome do funcionario"
+  [(ngModel)]="searchTerm"
+  showCancelButton= "focus"
+  animated></ion-searchbar>
+
+  
+    <ion-item-sliding *ngFor="let todo of tasks  | filter:searchTerm">
+      <ion-item >
+        <ion-label>
+          <div color="danger">
+            <h1 class="tipoRegistro">{{todo.tipoRegistro}}</h1> <br>
+            <a class="itemNome">{{todo.nome}}</a> <br>
+            <h2 style="float: right;">{{todo.cpf}}</h2>
+            <h3 class="itemCargo">{{todo.cargo}}</h3> <br><br>
+            <a class="itemData">{{todo.horaEntrada}}</a> <p></p>
+            <a class="itemData">{{todo.horaSaida}}</a>
+            <a class="itemData">{{todo.dia_registro}}</a>
+            <a class="itemData">{{todo.hora_saida}}</a>  <p></p>  
+            <a class="itemData">{{todo.hora_entrada}}</a>          
+          </div>          
+        </ion-label>
+        
+      </ion-item>
+      <br>
+      <ion-item-options side="end">
+        <ion-item-option (click)="removeTask(todo.id)" color="danger">delete</ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="start">
+        <ion-item-option [routerLink]="['/details', todo.id]" color="secondary">edit</ion-item-option>
+      </ion-item-options>
+    
+    </ion-item-sliding>
+  
+    <ion-card class="custombutton">
+      <ion-button expand="block" routerLink="/login" >LOGOUT</ion-button>
+    </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
+    <ion-fab-button routerLink="/details" routerDirection="forward">
+    <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

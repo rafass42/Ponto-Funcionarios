@@ -1,0 +1,40 @@
+<ion-content color= "primary" [fullscreen]="true">
+
+  <ion-item class="StandardSTY">
+  <ion-label style="text-align: center;">
+    Cadastrar Funcionario
+  </ion-label>
+  </ion-item>
+<ion-item-divider color="primary">
+  <ion-label>
+    
+    Digite os dados do funcionario
+  </ion-label>
+</ion-item-divider>
+  
+ 
+  <ion-item>
+   <ion-input  type="email" placeholder="Digite o nome" name="nome" [(ngModel)]="todo.nome"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input [brmasker]="{person: true}" maxLength="14" type="email" placeholder="Digite o CPF" name="cpf" [(ngModel)]="todo.cpf"></ion-input>
+   </ion-item>
+   <ion-item>
+    <ion-input  placeholder="Digite o cargo" name="cargo" [(ngModel)]="todo.cargo"></ion-input>
+   </ion-item>
+   <ion-item>
+    <ion-input  placeholder="Digite o horario de entrada" name="horaEntrada" [(ngModel)]="todo.horaEntrada"></ion-input>
+   </ion-item>
+   <ion-item>
+    <ion-input type="email" placeholder="Digite o horario de saida" name="horaSaida" [(ngModel)]="todo.horaSaida"></ion-input>
+   </ion-item>
+  <br>
+  <ion-item button class="ion-button-light ion-text-center">
+    <ion-label  color="primary" (click)="editing ? updateTask():addTask()">SALVAR</ion-label>
+    </ion-item>
+ 
+  <ion-button routerLink="/start" expand="full" fill="clear" color="light">
+    VOLTAR
+  </ion-button>
+</ion-content>
+
