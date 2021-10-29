@@ -1,4 +1,5 @@
 import { Component, OnInit,  } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { IonRouterOutlet, LoadingController, ToastController } from '@ionic/angular';
@@ -15,8 +16,23 @@ export class LoginPage implements OnInit {
   public userLogin:User = {};
   private loading: any;
   
-  
+
+  formLogin: FormGroup;
+ 
+  public mensagens_validacao = {
+    login: [
+      { tipo: 'required', mensagem: 'Email não preenchido' },
+      { tipo: 'email', mensagem: 'E-mail Invalido' },
+      
+    ],
+    senha: [
+      { tipo: 'required', mensagem: 'Senha não preenchida' },
+     
+    ]
+  }
+
   constructor(
+    private formBuilder: FormBuilder,
     private platform: Platform,
     private routerOutlet: IonRouterOutlet,
     public router: Router,
@@ -32,7 +48,14 @@ export class LoginPage implements OnInit {
   });
     }
 
-  ngOnInit() { }
+  ngOnInit() 
+    {
+      this.formLogin = this.formBuilder.group({
+        login: ['', [Validators.required, Validators.minLength(10),Validators.email]],
+        senha: ['', [Validators.required ]],
+     })
+
+   }
 
   async login(){
     await this.presentLoading();

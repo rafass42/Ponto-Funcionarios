@@ -4,25 +4,44 @@ import { Task } from 'src/app/model/task';
 import { TodoService } from 'src/app/service/todo.service';
 import { cpf } from 'cpf-cnpj-validator';
 import { AlertController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-ponto-saida',
   templateUrl: './ponto-saida.page.html',
   styleUrls: ['./ponto-saida.page.scss'],
 })
 export class PontoSaidaPage implements OnInit {
+
+  
+  formCPF: FormGroup;
+ 
+  public mensagens_validacao = {
+    CPF: [
+      { tipo: 'required', mensagem: 'CPF não preenchido' },
+      { tipo: 'minlength', mensagem: 'O CPF deve ter 14 caracteres' }
+    ]
+  }
+
   timeEntered2 = new Date();
   todo:Task= {
     
     tipoRegistro:'SAÍDA',
     cpf:'',
-    dia_registro:['Data: '+this.timeEntered2.getUTCDate()+'/'+(this.timeEntered2.getUTCMonth()+1)+'/'+this.timeEntered2.getFullYear()],
-    hora_entrada:['Saiu as: '+this.timeEntered2.getHours()+':'+this.timeEntered2.getMinutes()],
+    dia_registro:[ 'Data: '+('0' + this.timeEntered2.getDate()).slice(-2) + '/'
+    + ('0' + (this.timeEntered2.getMonth()+1)).slice(-2) + '/'
+    + this.timeEntered2.getFullYear()],
+    hora_entrada:['Saiu as: '+('0'+this.timeEntered2.getHours()).slice(-2)+':'+('0'+this.timeEntered2.getMinutes()).slice(-2)],
  }
  params;
  editing:boolean= false
- constructor(private todoService: TodoService, private router :Router, private activateRoute:ActivatedRoute, private alertCtrl:AlertController) { }
+ constructor(private formBuilder: FormBuilder, private todoService: TodoService, private router :Router, private activateRoute:ActivatedRoute, private alertCtrl:AlertController) { }
 
  ngOnInit() {
+
+  this.formCPF = this.formBuilder.group({
+    CPF: ['', [Validators.required, Validators.minLength(14)]],
+ })
+
    this.params = this.activateRoute.snapshot.params
    if(this.params.id){
      this.editing= true
@@ -40,6 +59,7 @@ export class PontoSaidaPage implements OnInit {
    this.todoService.addTask(this.todo);
    this.todo ={},
    this.presentSucess()
+   this.router.navigate(['/start'])
    }
    else{
     this.presentFail()

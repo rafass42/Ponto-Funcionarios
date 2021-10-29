@@ -1,5 +1,5 @@
 <ion-content color= "primary" [fullscreen]="true">
-
+  <form [formGroup]="formCPF">
   <ion-item class="StandardSTY">
   <ion-label style="text-align: center;">
     Registro de ENTRADA de funcionario
@@ -12,19 +12,31 @@
   </ion-label>
 </ion-item-divider>
   
- 
+
   <ion-item>
     
       
 
-    <ion-input [brmasker]="{person: true}" maxLength="14" type="email" placeholder="Digite o CPF" name="cpf" [(ngModel)]="todo.cpf"></ion-input>
+    <ion-input type="text" formControlName="CPF" [brmasker]="{person: true}" maxLength="14" minLength="14"  placeholder="Digite o CPF" name="CPF" [(ngModel)]="todo.cpf"></ion-input>
+    
+    <ng-container *ngFor="let erro of mensagens_validacao.CPF">
+      <span class="msg-erro" *ngIf="formCPF.get('CPF').hasError(erro.tipo) && (formCPF.get('CPF').dirty || formCPF.get('CPF').touched)">
+  
+        {{erro.mensagem}}
+  
+      </span>
+    </ng-container>
+
+
   </ion-item>
+  
   <br>
   <ion-item button class="ion-button-light ion-text-center">
-    <ion-label  color="primary" (click)="editing ? updateTask():addTask()">SALVAR</ion-label>
+    <ion-label color="primary" (click)="editing ? updateTask():addTask()">SALVAR</ion-label>
     </ion-item>
  
   <ion-button routerLink="/start" expand="full" fill="clear" color="light">
     VOLTAR
   </ion-button>
+</form>
 </ion-content>

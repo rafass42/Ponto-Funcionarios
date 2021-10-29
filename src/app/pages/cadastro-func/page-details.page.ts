@@ -4,6 +4,7 @@ import { Task } from 'src/app/model/task';
 import { TodoService } from 'src/app/service/todo.service';
 import { cpf } from 'cpf-cnpj-validator';
 import { AlertController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-page-details',
@@ -12,6 +13,30 @@ import { AlertController } from '@ionic/angular';
 })
 export class PageDetailsPage implements OnInit {
   
+  formCadastro: FormGroup;
+ 
+  public mensagens_validacao = {
+    nome: [
+      { tipo: 'required', mensagem: 'Nome não preenchido' },
+      { tipo: 'minlength', mensagem: 'O nome deve ter pelo menos 10 caracteres' },
+      
+    ],
+    cpf: [
+      { tipo: 'required', mensagem: 'CPF não preenchido' },
+      { tipo: 'minlength', mensagem: 'O CPF deve ter 14 caracteres' },
+    ],
+    cargo: [
+      { tipo: 'required', mensagem: 'Cargo não preenchido' },
+      { tipo: 'minlength', mensagem: 'O cargo deve ter pelo menos 3 caracteres' },
+      ],
+    hora_entrada: [
+      { tipo: 'minlength', mensagem: 'Hora de entrada não preenchida' },
+      ],
+    hora_saida: [
+      { tipo: 'minlength', mensagem: 'Hora de saída não preenchida' },
+      ],  
+  }
+
   todo:Task= {
     tipoRegistro:'CONTRATAÇÃO',
      nome:'',
@@ -22,9 +47,24 @@ export class PageDetailsPage implements OnInit {
   }
   params;
   editing:boolean= false
-  constructor(private todoService: TodoService, private router :Router, private activateRoute:ActivatedRoute, private alertCtrl:AlertController) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private todoService: TodoService, 
+    private router :Router, 
+    private activateRoute:ActivatedRoute, 
+    private alertCtrl:AlertController) { }
 
   ngOnInit() {
+
+    this.formCadastro = this.formBuilder.group({
+      nome: ['', [Validators.required, Validators.minLength(10)]],
+      cpf: ['', [Validators.required, Validators.minLength(14)] ],
+      cargo: ['', [Validators.required, Validators.minLength(3) ]],
+      hora_entrada: ['', [ Validators.minLength(15)]],
+      hora_saida: ['', [ Validators.minLength(13)]],
+   })
+
+
     this.params = this.activateRoute.snapshot.params
     if(this.params.id){
       this.editing= true
@@ -38,7 +78,7 @@ export class PageDetailsPage implements OnInit {
   }
 
   addTask(){ 
-    if(cpf.isValid(this.todo.cpf)){
+    if(cpf.isValid(this.todo.cpf) && (this.formCadastro.valid)){
     this.todoService.addTask(this.todo);
     this.todo ={}
     this.presentSucess(),

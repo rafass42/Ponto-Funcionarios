@@ -3,27 +3,56 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Task } from 'src/app/model/task';
 import { TodoService } from 'src/app/service/todo.service';
 import { cpf } from 'cpf-cnpj-validator';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonDatetime } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-ponto-entrada',
   templateUrl: './ponto-entrada.page.html',
   styleUrls: ['./ponto-entrada.page.scss'],
 })
 export class PontoEntradaPage implements OnInit {
+
+  formCPF: FormGroup;
+ 
+  public mensagens_validacao = {
+    CPF: [
+      { tipo: 'required', mensagem: 'CPF não preenchido' },
+      { tipo: 'minlength', mensagem: 'O CPF deve ter 14 caracteres' }
+    ]
+  }
+
   timeEntered1 = new Date();
   todo:Task= {
     
     tipoRegistro:'ENTRADA',
     cpf:'',
-    dia_registro:['Data: '+this.timeEntered1.getUTCDate()+'/'+(this.timeEntered1.getUTCMonth()+1)+'/'+this.timeEntered1.getFullYear()],
-    hora_entrada:['Entrou as: '+this.timeEntered1.getHours()+':'+this.timeEntered1.getMinutes()],
+    dia_registro:[ 'Data: '+('0' + this.timeEntered1.getDate()).slice(-2) + '/'
+    + ('0' + (this.timeEntered1.getMonth()+1)).slice(-2) + '/'
+    + this.timeEntered1.getFullYear()],
+    hora_entrada:['Entrou as: '+('0'+this.timeEntered1.getHours()).slice(-2)+':'+('0'+this.timeEntered1.getMinutes()).slice(-2)],
  }
  params;
  editing:boolean= false
- constructor(private todoService: TodoService, private router :Router, private activateRoute:ActivatedRoute, private alertCtrl:AlertController) { }
+ 
+  
 
+ constructor(
+  private formBuilder: FormBuilder, 
+  private todoService: TodoService, 
+  private router :Router, 
+  private activateRoute:ActivatedRoute,
+  private alertCtrl:AlertController)
+  { 
+
+    
+  }
  ngOnInit() {
    
+  this.formCPF = this.formBuilder.group({
+    CPF: ['', [Validators.required, Validators.minLength(14)]],
+ })
+
    this.params = this.activateRoute.snapshot.params
    if(this.params.id){
      this.editing= true
@@ -41,9 +70,10 @@ export class PontoEntradaPage implements OnInit {
     this.presentSucess(),
    this.todoService.addTask(this.todo);
    this.todo ={}
+   this.router.navigate(['/start'])
    }else{
-    this.presentFail(),
-     console.log('deu n mano')
+    this.presentFail()
+     
    }
  }
  updateTask(){

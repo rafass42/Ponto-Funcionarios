@@ -40,10 +40,6 @@ const routes: Routes = [
     path: 'start',
     loadChildren: () => import('./start/start.module').then( m => m.StartPageModule)
   },
-  {
-    path: 'info-func',
-    loadChildren: () => import('./pages/info-func/info-func.module').then( m => m.InfoFuncPageModule)
-  },
 ];
 
 @NgModule({

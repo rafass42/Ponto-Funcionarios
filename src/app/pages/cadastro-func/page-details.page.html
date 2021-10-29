@@ -1,5 +1,5 @@
 <ion-content color= "primary" [fullscreen]="true">
-
+  <form [formGroup]="formCadastro">
   <ion-item class="StandardSTY">
   <ion-label style="text-align: center;">
     Cadastrar Funcionario
@@ -14,20 +14,70 @@
   
  
   <ion-item>
-   <ion-input  type="email" placeholder="Digite o nome" name="nome" [(ngModel)]="todo.nome"></ion-input>
+   <ion-input required formControlName="nome"  placeholder="Digite o nome" name="nome" [(ngModel)]="todo.nome"></ion-input>
+
+   <ng-container *ngFor="let erro of mensagens_validacao.nome">
+    <span class="msg-erro" *ngIf="formCadastro.get('nome').hasError(erro.tipo) && (formCadastro.get('nome').dirty || formCadastro.get('nome').touched)">
+
+      {{erro.mensagem}}
+
+    </span>
+  </ng-container>
+
   </ion-item>
+
   <ion-item>
-    <ion-input [brmasker]="{person: true}" maxLength="14" type="email" placeholder="Digite o CPF" name="cpf" [(ngModel)]="todo.cpf"></ion-input>
+    <ion-input formControlName="cpf" required [brmasker]="{person: true}" maxLength="14" type="email" placeholder="Digite o CPF" name="cpf" [(ngModel)]="todo.cpf"></ion-input>
+
+    <ng-container *ngFor="let erro of mensagens_validacao.cpf">
+      <span class="msg-erro" *ngIf="formCadastro.get('cpf').hasError(erro.tipo) && (formCadastro.get('cpf').dirty || formCadastro.get('cpf').touched)">
+  
+        {{erro.mensagem}}
+  
+      </span>
+    </ng-container>
+
    </ion-item>
+
    <ion-item>
-    <ion-input  placeholder="Digite o cargo" name="cargo" [(ngModel)]="todo.cargo"></ion-input>
+    <ion-input formControlName="cargo" required placeholder="Digite o cargo" name="cargo" [(ngModel)]="todo.cargo"></ion-input>
+
+    <ng-container *ngFor="let erro of mensagens_validacao.cargo">
+      <span class="msg-erro" *ngIf="formCadastro.get('cargo').hasError(erro.tipo) && (formCadastro.get('cargo').dirty || formCadastro.get('cargo').touched)">
+  
+        {{erro.mensagem}}
+  
+      </span>
+    </ng-container>
+
    </ion-item>
+
    <ion-item>
-    <ion-input  placeholder="Digite o horario de entrada" name="horaEntrada" [(ngModel)]="todo.horaEntrada"></ion-input>
+    <ion-input formControlName="hora_entrada" required maxLength="15" placeholder="Digite o horario de entrada" name="horaEntrada" [(ngModel)]="todo.horaEntrada"></ion-input>
+
+    <ng-container *ngFor="let erro of mensagens_validacao.hora_entrada">
+      <span class="msg-erro" *ngIf="formCadastro.get('hora_entrada').hasError(erro.tipo) && (formCadastro.get('hora_entrada').dirty || formCadastro.get('hora_entrada').touched)">
+  
+        {{erro.mensagem}}
+  
+      </span>
+    </ng-container>
+
    </ion-item>
+
    <ion-item>
-    <ion-input type="email" placeholder="Digite o horario de saida" name="horaSaida" [(ngModel)]="todo.horaSaida"></ion-input>
+    <ion-input formControlName="hora_saida" required maxLength="13" placeholder="Digite o horario de saida" name="horaSaida" [(ngModel)]="todo.horaSaida"></ion-input>
+
+    <ng-container *ngFor="let erro of mensagens_validacao.hora_saida">
+      <span class="msg-erro" *ngIf="formCadastro.get('hora_saida').hasError(erro.tipo) && (formCadastro.get('hora_saida').dirty || formCadastro.get('hora_saida').touched)">
+  
+        {{erro.mensagem}}
+  
+      </span>
+    </ng-container>
+
    </ion-item>
+
   <br>
   <ion-item button class="ion-button-light ion-text-center">
     <ion-label  color="primary" (click)="editing ? updateTask():addTask()">SALVAR</ion-label>
@@ -36,5 +86,6 @@
   <ion-button routerLink="/start" expand="full" fill="clear" color="light">
     VOLTAR
   </ion-button>
+</form>
 </ion-content>
 

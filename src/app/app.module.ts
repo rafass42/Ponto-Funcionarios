@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import {FormsModule} from '@angular/forms'
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms'
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -24,9 +24,12 @@ import { AuthGuard } from './service/auth.guard';
      AppRoutingModule,
      AngularFireModule.initializeApp(environment.firebase),
      AngularFirestoreModule,
-     FormsModule
+     FormsModule,
+     
     ],
   providers: [
+    FormBuilder,
+    
     AuthGuard,
     StatusBar,
     SplashScreen,

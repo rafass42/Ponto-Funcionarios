@@ -1,5 +1,5 @@
 <ion-content color="primary" [fullscreen]="true">
-  
+  <form [formGroup]="formLogin">
   <ion-card>
     <ion-item class="ion-text-center text-boldlogin">
       <ion-label>
@@ -8,15 +8,27 @@
     </ion-item>
     <ion-item>
       <ion-label position="stacked">E-mail</ion-label>
-      <ion-input type="email" placeholder="E-mail" [(ngModel)]="userLogin.email"> </ion-input>
-      
+      <ion-input formControlName="login" type="email" placeholder="E-mail" [(ngModel)]="userLogin.email" > </ion-input>
+      <ng-container *ngFor="let erro of mensagens_validacao.login">
+        <span class="msg-erro" *ngIf="formLogin.get('login').hasError(erro.tipo) && (formLogin.get('login').dirty || formLogin.get('login').touched)">
+    
+          {{erro.mensagem}}
+    
+        </span>
+      </ng-container>
       
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Senha</ion-label>
-      <ion-input type="password" placeholder="Senha" [(ngModel)]="userLogin.password"> </ion-input>
-      
+      <ion-input formControlName="senha" type="password" placeholder="Senha" [(ngModel)]="userLogin.password"> </ion-input>
+      <ng-container *ngFor="let erro of mensagens_validacao.senha">
+        <span class="msg-erro" *ngIf="formLogin.get('senha').hasError(erro.tipo) && (formLogin.get('senha').dirty || formLogin.get('senha').touched)">
+    
+          {{erro.mensagem}}
+    
+        </span>
+      </ng-container>
     </ion-item>
 
     
@@ -33,5 +45,5 @@
   
   <br><br><br><br>
   
-
+</form>
 </ion-content>
