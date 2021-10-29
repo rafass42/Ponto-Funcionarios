@@ -69,7 +69,7 @@ export class LoginPage implements OnInit {
     } catch (error) {
       console.error(error);
 
-      this.presentToast(error.message);
+      this.presentToast('Login ou senha inválidos');
     } finally {
       
       this.loading.dismiss();
